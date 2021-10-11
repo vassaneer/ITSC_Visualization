@@ -80,13 +80,15 @@ export default class DataHelper {
                 let node = new SurfaceShadingNode(item.id, item.dbIds);
 
                 item.sensors.forEach((sensor) => {
-                    let shadingPoint = new SurfaceShadingPoint(sensor.id, sensor.position, sensor.sensorTypes, sensor.name, { styleId: sensor.styleId || sensor.type });
+                        let shadingPoint = new SurfaceShadingPoint(sensor.number, sensor.position, sensor.sensorTypes, sensor.name, { styleId: sensor.styleId || sensor.type });
 
-                    // If the position is not specified, derive it from the center of Geometry
-                    if (sensor.dbId != undefined && sensor.position == null) {
-                        shadingPoint.positionFromDBId(model, sensor.dbId);
-                    }
-                    node.addPoint(shadingPoint);
+                        // If the position is not specified, derive it from the center of Geometry
+                        if (sensor.dbId != undefined && sensor.position == null) {
+                            shadingPoint.positionFromDBId(model, sensor.dbId);
+                        }else{
+                            shadingPoint.name = sensor.id
+                        }
+                        node.addPoint(shadingPoint);
                 });
 
                 return node;
@@ -109,7 +111,6 @@ export default class DataHelper {
                 });
                 return group;
             }
-
             rawData.forEach((item) => {
                 if (item.children) {
                     shadingData.addChild(createGroup(item));
@@ -133,7 +134,7 @@ export default class DataHelper {
      * @param {Model} model Model loaded in viewer
      * @param {Device[]} deviceList List of devices to be mapped to loaded rooms.
      */
-    async createShadingGroupByFloor(viewer, model, deviceList) {
+    async createShadingGroupByFloor(viewer, model , deviceList) {
         let dataVizExt = await this.getExtension(viewer);
 
         const getShadingData = async () => {
@@ -151,6 +152,55 @@ export default class DataHelper {
         return getShadingData();
     }
 
+    async createShadingGroupByName(model ,deviceList){
+        
+        async function getPropAsync(dbId, model) {
+            return new Promise((resolve, reject) => {
+                model.getProperties(dbId, result => resolve(result));
+            });
+        }
+
+        // get room name
+        async function getRoomName(dbId, model) {
+            const result = await getPropAsync(dbId, model);     
+            const nameProp = result.properties.find(p => p.attributeName === 'Label');
+            if(nameProp==undefined) return "";
+            else return nameProp.displayValue
+        }
+
+        // get room ids from name of properties
+        async function getRoomDbIds(model) {
+            return new Promise((resolve,reject)=>{
+                model.search('Revit Electrical Equipment', resolve, reject,['Category'],{ searchHidden: true })
+            })
+        }
+
+        // get all dbIds about rooms
+        // let dbRooms = [];
+        // for ( let i = deviceList.length - 1; i >= 0; i-- ) {
+        //       const name = await getRoomName(deviceList[i].name, model);
+        //       dbRooms.push({dbId:deviceList[i].dbId,name:name.toLowerCase()})
+        // }
+        
+        // map device to room and level or map device to rack
+        let allLevel = []
+        for ( let i =0; i < deviceList.length; i++ ) {
+            const element = deviceList[i]
+            const name = await getRoomName(element.name, model);
+            const device = {id:element.id, dbId:element.name, type:element.sensorTypes, sensorTypes:element.sensorTypes,position:element.position,status:element.status,number:element.number}
+            let data="";
+            if(allLevel.length>0)
+                data = allLevel.find(e=> e.id==name)
+            if(data){
+                data.sensors.push(device)
+                data.dbIds.push(element.name)
+            }else{
+                allLevel.push({id:name,dbIds:[element.name],sensors:[device]})
+            }
+        }
+        return [{ id: "Rack",children: allLevel}]
+        
+    }
 
     async waitForInstanceTree(dataVizExt, model) {
         if (dataVizExt.waitForInstanceTree) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
-import { BaseApp } from "forge-dataviz-iot-react-components";
+import BaseApp from "forge-dataviz-iot-react-components/client/components/BaseApp.jsx"
 import DataHelper from "./DataHelper";
 import { EventTypes } from "forge-dataviz-iot-react-components";
 import { SpriteSize, SensorStyleDefinitions, PropIdGradientMap, PropertyIconMap } from "../config/SensorStyles.js";

@@ -1,6 +1,7 @@
 const { CsvDataGateway } = require("forge-dataviz-iot-data-modules/server");
 const { SyntheticGateway } = require("forge-dataviz-iot-data-modules/server");
 const { AzureGateway } = require("forge-dataviz-iot-data-modules/server");
+const MysqlGateway  = require("forge-dataviz-iot-data-modules/server/gateways/MysqlGateway");
 
 module.exports = function (router) {
     function gatewayFactory(req, res, next) {
@@ -19,6 +20,11 @@ module.exports = function (router) {
                 case "azure":
                     deviceModelFile = process.env.DEVICE_MODEL_JSON || `${syntheticDataRoot}/device-models.json`;
                     req.dataGateway = new AzureGateway(deviceModelFile);
+                    break;
+                case "mysql":
+                    deviceModelFile = process.env.DEVICE_MODEL_JSON || `${syntheticDataRoot}/device-models.json`;
+                    const configFile2 = process.env.SYNTHETIC_CONFIG || `${syntheticDataRoot}/../data-gateways/config.json`
+                    req.dataGateway = new MysqlGateway(deviceModelFile ,configFile2);
                     break;
                 case "csv":
                     deviceModelFile = process.env.CSV_MODEL_JSON || `${syntheticDataRoot}/device-models.json`;
@@ -92,7 +98,7 @@ module.exports = function (router) {
         dataGateway
             .getDevicesInModel(deviceModelId)
             .then((devices) => {
-                setCacheHeader(res, 60 * 60 * 4);
+                //setCacheHeader(res, 60 * 60 * 4);
                 res.status(200).json(devices);
             })
             .catch((error) => {
@@ -137,4 +143,45 @@ module.exports = function (router) {
                 res.status(500).send(error);
             });
     });
+
+    /**
+     * Post from web for add new sprite to database
+     */
+
+    router.post('/api/sprite/add', gatewayFactory, setCORS, function(req,res){
+        const dbId=req.body.dbId
+        const nameDevice=req.body.nameDevice
+        const nameRack=req.body.nameRack
+        const pos_x=req.body.pos_x
+        const pos_y=req.body.pos_y
+        const pos_z=req.body.pos_z
+        const dataGateway = req.dataGateway;
+        dataGateway.newSprite(dbId, nameRack, nameDevice, pos_x, pos_y, pos_z)
+        .then((newSprite) => {
+            //setCacheHeader(res, 60 * 60 * 2);
+            res.status(200).json(newSprite);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+    })
+
+    /**
+     * get from web for delete sprite to database
+     */
+    router.post('/api/sprite/editStatus', gatewayFactory, setCORS, function(req,res){
+        const id = req.body.id;
+        const status = req.body.status
+        const dataGateway = req.dataGateway;
+        dataGateway.editSpriteStatus(id, status)
+        .then((newSprite) => {
+            //setCacheHeader(res, 60 * 60 * 2);
+            res.status(200).json(newSprite);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send(error);
+        });
+    })
 };

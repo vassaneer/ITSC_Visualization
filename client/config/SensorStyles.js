@@ -29,11 +29,11 @@ export const SensorStyleDefinitions = {
 export const PropIdGradientMap = {
     Temperature: [0x0000ff, 0x00ff00, 0xffff00, 0xff0000],
     Humidity: [0x00f260, 0x0575e6],
-    "CO₂": [0x1e9600, 0xfff200, 0xff0000],
+    "Electric": [0xFFE700 , 0xfff200, 0xff0000],
 };
 
 export const PropertyIconMap = {
     Temperature: temperatureSvg,
     Humidity: humiditySvg,
-    "CO₂": co2Svg,
+    "Electric": co2Svg,
 };

@@ -1,0 +1,18 @@
+$time_slider_height: 0px;
+$contact_us_card_height: 80px;
+
+
+#MyViewerDiv1 {
+    position: absolute;
+    width: 50% !important;
+    height: calc(100% - #{$time_slider_height});
+    left: 0px;
+    top: #{$time_slider_height};
+}
+#MyViewerDiv2 {
+    position: absolute;
+    width: 50% !important;
+    height: calc(100% - #{$time_slider_height});
+    left: 50%;
+    top: #{$time_slider_height};
+}
