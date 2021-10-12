@@ -1,7 +1,7 @@
 const { CsvDataGateway } = require("forge-dataviz-iot-data-modules/server");
 const { SyntheticGateway } = require("forge-dataviz-iot-data-modules/server");
 const { AzureGateway } = require("forge-dataviz-iot-data-modules/server");
-const MysqlGateway  = require("forge-dataviz-iot-data-modules/server/gateways/MysqlGateway");
+const MysqlGateway  = require("../gateways/data-gateways/MysqlGateway.js");
 
 module.exports = function (router) {
     function gatewayFactory(req, res, next) {
