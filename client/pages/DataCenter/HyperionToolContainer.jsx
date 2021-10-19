@@ -773,7 +773,7 @@ function HyperionToolContainer(props) {
                         </React.Fragment>)}
                     <Divider style={{ backgroundColor: "white" }} />
                 {/* add new device */}
-                {/* <IconButton
+                <IconButton
                     id="ssdButton"
                     className={classes.customHoverFocus}
                     onClick={handleSPButtonClick}
@@ -924,7 +924,7 @@ function HyperionToolContainer(props) {
                 </React.Fragment>
                 )}
                 </Popper>
-                )} */}
+                )}
 
             </div>
         </React.Fragment>
