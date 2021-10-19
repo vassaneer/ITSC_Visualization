@@ -6,7 +6,7 @@ const { loadJSONFile } = require("forge-dataviz-iot-data-modules/server/gateways
 const STARTDATE = new Date("2021-01-01");
 
 const name_mysql = "bot";
-const password_mysql = "261492@Cpe";
+const password_mysql = "59781352640@Ab";
 const ipAddress_mysql = "128.199.183.124";
 const db_mysql = "itsc";
 
@@ -116,12 +116,7 @@ class MysqlGateway extends DataGateway {
     }
 
     async getAggregates(deviceId, propertyId, startSecond, endSecond, resolution) {
-        this.db = await mysql.createConnection({
-            host: ipAddress_mysql,
-                user: name_mysql,
-                password: password_mysql,
-                database: db_mysql
-        })
+      
        
         // Just sample data, no need to validate existence of device/property IDs.
         const totalSeconds = Math.abs(endSecond - startSecond);
@@ -158,8 +153,13 @@ class MysqlGateway extends DataGateway {
          *  
          * */ 
         const firstTask = (startEpoch, endEpoch) =>{
-           return  new Promise((resolve, reject) => {
-               
+           return  new Promise(async (resolve, reject) => {
+            this.db = await mysql.createConnection({
+                host: ipAddress_mysql,
+                    user: name_mysql,
+                    password: password_mysql,
+                    database: db_mysql
+            })
                 this.db.query("select d.name, l.value, l.epoch, s.name as sensor from log l inner join device d inner join sensor s on l.device = d.id and s.id=l.sensor where  d.id = ? and s.name = ? and l.epoch> ? and l.epoch< ?",[deviceId,propertyId, startEpoch, endEpoch], (err, results)=>{
                     if(err) throw err;
                     var arr = []
@@ -175,7 +175,13 @@ class MysqlGateway extends DataGateway {
         }
 
          // get max and min in all device
-         const secondTask = new Promise( (resolve, reject) => {
+         const secondTask = new Promise(async (resolve, reject) => {
+            this.db = await mysql.createConnection({
+                host: ipAddress_mysql,
+                    user: name_mysql,
+                    password: password_mysql,
+                    database: db_mysql
+            })
             this.db.query("select min(l.Value) as rangemin, max(l.Value) as rangemax from sensor s inner join log l on s.id=l.Sensor and l.device>10 and s.name= ?",[propertyId], (err, results)=>{
                 if(err) throw err;
                 var arr = []
@@ -187,7 +193,7 @@ class MysqlGateway extends DataGateway {
                     })
                   }); 
                    resolve(arr)
-                    //this.db.end();
+                    this.db.end();
             })
         })
         const range = await secondTask;

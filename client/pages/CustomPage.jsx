@@ -114,7 +114,7 @@ function CustomPage(props) {
             const networks = require('../config/Devices.json')
             for(const [key, value] of Object.entries(networks)){
                 // load all resource
-                loader.load('http://127.0.0.1:5500/dist/Interfaces/'+key+".png",
+                loader.load('http://128.199.183.124:9081/assets/Interfaces/'+key+".png",
                 function ( texture ) {
                     // set side 1.7 and 3.5
                     texture.offset.x = 0.5
