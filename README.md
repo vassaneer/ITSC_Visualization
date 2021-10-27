@@ -42,6 +42,9 @@ If you'd like to add your own customization on top of the Reference Application 
 -   _server/CustomRouter.js_ : Override or add new API routes.
 -   _sensor/hardware.ino_ : Send new node of sensor to MQTT
 
+### Change  own model
+If you'd like to add your own model.[Supported Translation Formats](https://forge.autodesk.com/en/docs/model-derivative/v2/developers_guide/supported-translations/)
+
 ## Further Reading
 
 Developer's Guide - https://forge.autodesk.com/en/docs/dataviz/v1/developers_guide
