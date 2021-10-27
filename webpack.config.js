@@ -9,7 +9,7 @@ var cssConfig = SiteConfig.toSCSSEnv();
 const isDevEnv = /^(local|dev|develop)$/gi.test(env);
 const sourceMapOptions = isDevEnv ? "eval-cheap-module-source-map" : false;
 const mode = isDevEnv ? "development" : "production";
-
+console.log(mode)
 var config = {
     entry: ["./client/app.js", "./scss/main.scss"],
     output: {

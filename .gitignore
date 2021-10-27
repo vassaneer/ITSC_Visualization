@@ -14,3 +14,4 @@ node_modules/
 .env
 package-lock.json
 .vscode/*
+MysqlGateway copy.js

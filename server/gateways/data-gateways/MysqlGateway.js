@@ -5,10 +5,10 @@ const tweenFunctions = require("tween-functions");
 const { loadJSONFile } = require("forge-dataviz-iot-data-modules/server/gateways/FileUtility.js");
 const STARTDATE = new Date("2021-01-01");
 
-const name_mysql = "bot";
-const password_mysql = "59781352640@Ab";
-const ipAddress_mysql = "128.199.183.124";
-const db_mysql = "itsc";
+const name_mysql = "NAME OF USER";
+const password_mysql = "PASSWORD OF USER";
+const ipAddress_mysql = "IP ADDRESS";
+const db_mysql = "DB NAME";
 
 function randomSign() {
     return Math.random() > 0.5 ? 1 : -1;
@@ -50,7 +50,7 @@ class MysqlGateway extends DataGateway {
             })
             // get max and min in all device
             const firstTask = new Promise((resolve, reject) => {
-                this.db.query("select s.id, s.Name, s.Unit,min(l.Epoch) as min,max(l.Epoch) as max, min(l.Value) as rangemin, max(l.Value) as rangemax from sensor s inner join log l on s.id=l.Sensor and l.device >10 group by id", (err, results)=>{
+                this.db.query("select s.id, s.Name, s.Unit,min(l.Epoch) as min,max(l.Epoch) as max, min(l.Value) as rangemin, max(l.Value) as rangemax from sensor s inner join log l on s.id=l.Sensor group by id", (err, results)=>{
                     if(err) throw err;
                     var arr = []
                     Object.entries(results).forEach((entry) => {
@@ -88,7 +88,7 @@ class MysqlGateway extends DataGateway {
         })
         
         const firstTask = new Promise((resolve, reject) => {
-            this.db.query("select d.id as number,d.name as deviceName, r.dbid as dbId, d.Position_x as x, d.Position_y as y, d.Position_z as z, exists(select * from log l where l.Device=d.id and d.Active=1) as status from device d inner join rack r on r.id = d.rack and d.id>10 order by dbid", (err, results)=>{
+            this.db.query("select d.id as number,d.name as deviceName, r.dbid as dbId, d.Position_x as x, d.Position_y as y, d.Position_z as z, exists(select * from log l where l.Device=d.id and d.Active=1) as status from device d inner join rack r on r.id = d.rack order by dbid", (err, results)=>{
                 if(err) throw err;
                 var arr = []
                 Object.entries(results).forEach((entry) => {

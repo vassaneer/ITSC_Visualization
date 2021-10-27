@@ -114,7 +114,7 @@ function CustomPage(props) {
             const networks = require('../config/Devices.json')
             for(const [key, value] of Object.entries(networks)){
                 // load all resource
-                loader.load('http://128.199.183.124:9081/assets/Interfaces/'+key+".png",
+                loader.load('http://localhost:5500/assets/Interfaces/'+key+".png",
                 function ( texture ) {
                     // set side 1.7 and 3.5
                     texture.offset.x = 0.5
@@ -138,6 +138,7 @@ function CustomPage(props) {
                         await dbids.forEach(async (element)=>{
                             let bigger = 0;
                             tree.enumNodeFragments(element, (fragid) => {
+                                console.log(key+ " "+ fragid)
                                 if(fragid>bigger) bigger=fragid
                             });
                             frags.setMaterial(bigger, material);
