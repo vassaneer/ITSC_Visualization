@@ -11,8 +11,10 @@ This sample application demonstrates the functionality of the Forge Data Visuali
     ├── client                  # Client-side code + configuration
     ├── docs                    # Additional documentation on how to upload a Revit model, setup Azure etc.
     ├── scss                    # SCSS files
+    ├── sensor                  # arduino files - send data to MQTT BROKER
     ├── server                  # Server-side configuration - router, sample synthetic/CSV data
     ├── shared                  # Config files shared between client and server
+    ├── SQL                     # schema of database   
     ├── tools                   # Tools to use in your own webpack file
     ├── package.json
     ├── webpack.config.js
@@ -38,6 +40,7 @@ If you'd like to add your own customization on top of the Reference Application 
 -   _custom.scss_ : Override or add custom styling to your application.
 -   _client/pages/CustomPage.jsx_ : Create a custom page for your application.
 -   _server/CustomRouter.js_ : Override or add new API routes.
+-   _sensor/hardware.ino_ : Send new node of sensor to MQTT
 
 ## Further Reading
 

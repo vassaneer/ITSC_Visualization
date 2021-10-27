@@ -1,0 +1,1 @@
+ALTER TABLE itsc.rack AUTO_INCREMENT=1;
