@@ -14,7 +14,7 @@ This sample application demonstrates the functionality of the Forge Data Visuali
     ├── sensor                  # arduino files - send data to MQTT BROKER
     ├── server                  # Server-side configuration - router, sample synthetic/CSV data
     ├── shared                  # Config files shared between client and server
-    ├── SQL                     # schema of database   
+    ├── SQL                     # Schema of database   
     ├── tools                   # Tools to use in your own webpack file
     ├── package.json
     ├── webpack.config.js
@@ -29,7 +29,7 @@ To successfully run this Reference Application, you need a _Forge account_. If y
 
 ### Installing and Running the Reference Application
 
-To install and run the Reference Application, see the [Data Visualization Extension QuickStart](https://forge.autodesk.com/en/docs/dataviz/v1/developers_guide/quickstart/).
+To install and run the Reference Application, see the [Data Visualization Extension QuickStart](https://forge.autodesk.com/en/docs/dataviz/v1/developers_guide/quickstart/running_the_application/).
 
 ## Advanced Users
 
