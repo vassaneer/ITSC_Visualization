@@ -42,9 +42,13 @@ If you'd like to add your own customization on top of the Reference Application 
 -   _server/CustomRouter.js_ : Override or add new API routes.
 -   _sensor/hardware.ino_ : Send new node of sensor to MQTT
 
-### Change  own model
+### Change own model
 If you'd like to add your own model [Replace the Default Model in the Reference Application with own Model](https://forge.autodesk.com/en/docs/dataviz/v1/developers_guide/quickstart/replace_model/), see the
 [Supported Translation Formats](https://forge.autodesk.com/en/docs/model-derivative/v2/developers_guide/supported-translations/)
+
+### Change own MySQL 
+If you'd like to add your own MySQL server, you have to chage this file
+-   _server/gateways/data-gateways/MysqlGateway.js_ 
 
 ## Further Reading
 
