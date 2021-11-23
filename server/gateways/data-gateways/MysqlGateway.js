@@ -5,10 +5,10 @@ const tweenFunctions = require("tween-functions");
 const { loadJSONFile } = require("forge-dataviz-iot-data-modules/server/gateways/FileUtility.js");
 const STARTDATE = new Date("2021-01-01");
 
-const name_mysql = "NAME OF USER";
-const password_mysql = "PASSWORD OF USER";
-const ipAddress_mysql = "IP ADDRESS";
-const db_mysql = "DB NAME";
+const name_mysql = "bot";
+const password_mysql = "59781352640@Ab";
+const ipAddress_mysql = "128.199.183.124";
+const db_mysql = "itsc";
 
 function randomSign() {
     return Math.random() > 0.5 ? 1 : -1;
@@ -160,7 +160,7 @@ class MysqlGateway extends DataGateway {
                     password: password_mysql,
                     database: db_mysql
             })
-                this.db.query("select d.name, l.value, l.epoch, s.name as sensor from log l inner join device d inner join sensor s on l.device = d.id and s.id=l.sensor where  d.id = ? and s.name = ? and l.epoch> ? and l.epoch< ?",[deviceId,propertyId, startEpoch, endEpoch], (err, results)=>{
+                this.db.query("select d.name, l.value, l.epoch, s.name as sensor from log l inner join device d inner join sensor s on l.device = d.id and s.id=l.sensor where  d.id = ? and s.name = ? and l.epoch>= ? and l.epoch<= ?",[deviceId,propertyId, startEpoch, endEpoch], (err, results)=>{
                     if(err) throw err;
                     var arr = []
                      Object.entries(results).forEach((entry) => {
@@ -182,7 +182,7 @@ class MysqlGateway extends DataGateway {
                     password: password_mysql,
                     database: db_mysql
             })
-            this.db.query("select min(l.Value) as rangemin, max(l.Value) as rangemax from sensor s inner join log l on s.id=l.Sensor and l.device>10 and s.name= ?",[propertyId], (err, results)=>{
+            this.db.query("select min(l.Value) as rangemin, max(l.Value) as rangemax from sensor s inner join log l on s.id=l.Sensor and s.name= ?",[propertyId], (err, results)=>{
                 if(err) throw err;
                 var arr = []
                 Object.entries(results).forEach((entry) => {
@@ -203,6 +203,8 @@ class MysqlGateway extends DataGateway {
           */
         let currSecond = startSecond;
         const data = await firstTask(startSecond,endSecond);
+        console.log(startSecond+" "+endSecond)
+        console.log(data)
         if(data.length!=0){
             for (let i = 0; i < maxDataPoints; ++i, currSecond += gapSeconds) {
                 timestamps.push(currSecond);
